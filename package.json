@@ -1,0 +1,25 @@
+{
+  "name": "www.remindify.me",
+  "version": "1.0.0",
+  "description": "A web application that displays weather, EDB alerts, and air quality information for Hong Kong.",
+  "homepage": "https://github.com/remindify/www.remindify.me#readme",
+  "bugs": {
+    "url": "https://github.com/remindify/www.remindify.me/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/remindify/www.remindify.me.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "playwright": "^1.57.0"
+  }
+}

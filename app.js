@@ -1,78 +1,28 @@
-// Mock Backend APIs
+const URL = "https://api.remindify.me"
 const api = {
     getWeather: async () => {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return {
-            time: "07:00AM | Mon | 5 Jan, 2025",
-            banner: "Good Morning! It's 15°C outside with 34% relative humidity.",
-            today: {
-                warnings: ["Cold Weather Warning", "Red"]
-            },
-            tomorrow: {
-                temp: "11 - 18°C",
-                humidity: "25 - 55%",
-                desc: "Fine. Cold in the morning. Very dry during the day.",
-                rainChance: "Low"
-            },
-            dayAfterTomorrow: {
-                temp: "12 - 19°C",
-                humidity: "35 - 65%",
-                desc: "Fine. Cold in the morning. Very dry during the day.",
-                rainChance: "Low"
-            },
-            summary: "A winter monsoon is bringing dry weather to Guangdong's coast, with humidity below 40% by noon. Expect fine and cold mornings, with temperatures rising slightly over the weekend, despite remaining cool. A windy easterly airstream is forecast for early next week, affecting southern China's coast."
-        };
+        const res = await fetch(URL + "/weather")
+        return res.json()
     },
     getEDB: async () => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return {
-            time: "07:00AM | Mon | 5 Jan, 2025",
-            today: {
-                warnings: ["Cold Weather Warning", "Red"]
-            },
-            tomorrow: {
-                temp: "11 - 18°C",
-                humidity: "25 - 55%",
-                desc: "Fine. Cold in the morning. Very dry during the day.",
-                rainChance: "Low"
-            },
-            dayAfterTomorrow: {
-                temp: "12 - 19°C",
-                humidity: "35 - 65%",
-                desc: "Fine. Cold in the morning. Very dry during the day.",
-                rainChance: "Low"
-            }
-        };
+        const res = await fetch(URL + "/edb")
+        return res.json()
     },
     getAirQuality: async () => {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return {
-            time: "07:00AM | Mon | 5 Jan, 2025",
-            locations: [
-                { name: "Causeway Bay, HongKong (銅鑼灣)", value: 88 },
-                { name: "Sham Shui Po, HongKong (深水埗)", value: 83 },
-                { name: "North Point, HongKong (北角)", value: 120 },
-                { name: "Southern, HongKong (南區)", value: 93 },
-                { name: "HongKong (香港)", value: 95 },
-                { name: "Sha Tin, HongKong (沙田)", value: 83 },
-                { name: "Central, HongKong (中環)", value: 95 },
-                { name: "Tung Chung, HongKong (東涌)", value: 84 },
-                { name: "Yuen Long, HongKong (元朗)", value: 95 },
-                { name: "Kwun Tong, HongKong (觀塘)", value: 83 },
-                { name: "Kwai Chung, HongKong (葵涌)", value: 85 },
-                { name: "Tuen Mun, HongKong (屯門)", value: 97 }
-            ]
-        };
+        const res = await fetch(URL + "/aqi")
+        return res.json()
     }
 };
 
 // UI Controller
 const UI = {
-    contentArea: document.getElementById('content-area'),
-    tabs: document.querySelectorAll('.tab-btn'),
+    contentArea: typeof document !== 'undefined' ? document.getElementById('content-area') : null,
+    tabs: typeof document !== 'undefined' ? document.querySelectorAll('.tab-btn') : [],
 
     init: function() {
+        if (!this.contentArea) this.contentArea = document.getElementById('content-area');
+        if (this.tabs.length === 0) this.tabs = document.querySelectorAll('.tab-btn');
+
         this.tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.id.replace('tab-', '');
@@ -103,18 +53,48 @@ const UI = {
 
         // Fetch and Render
         try {
+            let data;
             if (tabId === 'weather') {
-                const data = await api.getWeather();
+                data = await api.getWeather();
+                this.formatData(data);
                 this.renderWeather(data);
             } else if (tabId === 'edb') {
-                const data = await api.getEDB();
+                data = await api.getEDB();
+                this.formatData(data);
                 this.renderEDB(data);
             } else if (tabId === 'air-quality') {
-                const data = await api.getAirQuality();
+                data = await api.getAirQuality();
+                this.formatData(data);
                 this.renderAirQuality(data);
             }
         } catch (error) {
             this.contentArea.innerHTML = `<div class="text-red-500">Error loading data.</div>`;
+        }
+    },
+
+    formatData: function(data) {
+        if (data.body) data.body = data.body.replace(/\\n/g, '\n');
+        if (data.body1) data.body1 = data.body1.replace(/\\n/g, '\n');
+        
+        if (data.updated_at) {
+            const date = new Date(data.updated_at);
+            const hours = date.getUTCHours();
+            const minutes = date.getUTCMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12;
+            const displayMinutes = minutes.toString().padStart(2, '0');
+            
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const dayName = days[date.getUTCDay()];
+            
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const monthName = months[date.getUTCMonth()];
+            const day = date.getUTCDate();
+            const year = date.getUTCFullYear();
+            
+            data.formattedDate = `(${displayHours}:${displayMinutes}${ampm} | ${dayName} | ${day} ${monthName}, ${year})`;
+        } else {
+            data.formattedDate = '';
         }
     },
 
@@ -124,41 +104,20 @@ const UI = {
                 <span class="text-blue-600">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </span>
-                <span class="text-gray-700 font-medium">${data.banner}</span>
+                <span class="text-gray-700 font-medium">${data.title}</span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="md:col-span-2 card">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Weather (${data.time})</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Weather ${data.formattedDate}</h2>
                     
-                    <div class="space-y-6 text-gray-600">
-                        <div>
-                            <p class="font-semibold text-gray-800 mb-1">Today's weather warning:</p>
-                            <ul class="list-disc list-inside">
-                                ${data.today.warnings.map(w => `<li>- ${w}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        <div>
-                            <p class="font-semibold text-gray-800 mb-1">Tomorrow:</p>
-                            <p>${data.tomorrow.temp}</p>
-                            <p>${data.tomorrow.humidity}</p>
-                            <p>${data.tomorrow.desc}</p>
-                            <p>Chance of rain: ${data.tomorrow.rainChance}</p>
-                        </div>
-
-                        <div>
-                            <p class="font-semibold text-gray-800 mb-1">The Day after Tomorrow:</p>
-                            <p>${data.dayAfterTomorrow.temp}</p>
-                            <p>${data.dayAfterTomorrow.humidity}</p>
-                            <p>${data.dayAfterTomorrow.desc}</p>
-                            <p>Chance of rain: ${data.dayAfterTomorrow.rainChance}</p>
-                        </div>
+                    <div class="space-y-6 text-gray-600 whitespace-pre-line">
+                        ${data.body}
                     </div>
                 </div>
 
                 <div class="card">
                     <h2 class="text-2xl font-bold text-gray-800 mb-6">Summary</h2>
-                    <p class="text-gray-600 leading-relaxed">${data.summary}</p>
+                    <p class="text-gray-600 leading-relaxed whitespace-pre-line">${data.body1}</p>
                 </div>
             </div>
         `;
@@ -167,31 +126,10 @@ const UI = {
     renderEDB: function(data) {
         this.contentArea.innerHTML = `
             <div class="max-w-2xl mx-left card">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">EDB Alert (${data.time})</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">${data.id.toUpperCase()} Alert ${data.formattedDate}</h2>
                 
-                <div class="space-y-6 text-gray-600">
-                    <div>
-                        <p class="font-semibold text-gray-800 mb-1">Today's weather warning:</p>
-                        <ul class="list-disc list-inside">
-                            ${data.today.warnings.map(w => `<li>- ${w}</li>`).join('')}
-                        </ul>
-                    </div>
-
-                    <div>
-                        <p class="font-semibold text-gray-800 mb-1">Tomorrow:</p>
-                        <p>${data.tomorrow.temp}</p>
-                        <p>${data.tomorrow.humidity}</p>
-                        <p>${data.tomorrow.desc}</p>
-                        <p>Chance of rain: ${data.tomorrow.rainChance}</p>
-                    </div>
-
-                    <div>
-                        <p class="font-semibold text-gray-800 mb-1">The Day after Tomorrow:</p>
-                        <p>${data.dayAfterTomorrow.temp}</p>
-                        <p>${data.dayAfterTomorrow.humidity}</p>
-                        <p>${data.dayAfterTomorrow.desc}</p>
-                        <p>Chance of rain: ${data.dayAfterTomorrow.rainChance}</p>
-                    </div>
+                <div class="space-y-6 text-gray-600 whitespace-pre-line">
+                    ${data.body}
                 </div>
             </div>
         `;
@@ -201,17 +139,26 @@ const UI = {
         this.contentArea.innerHTML = `
             <div class="max-w-2xl mx-left card">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                    Air Quality Alert<span class="text-xs font-normal ml-1">⌄</span>: (${data.time})
+                    Air Quality Alert ${data.formattedDate}
                 </h2>
                 
-                <div class="space-y-1 text-gray-600">
-                    ${data.locations.map(loc => `
-                        <p>- ${loc.name}: <span class="text-gray-800">${loc.value}</span></p>
-                    `).join('')}
+                <div class="space-y-4 text-gray-600">
+                    <div class="whitespace-pre-line">
+                        <p class="font-semibold text-gray-800 mb-1">Warnings:</p>
+                        ${data.body}
+                    </div>
+                    <div class="whitespace-pre-line">
+                        <p class="font-semibold text-gray-800 mb-1">Station Readings:</p>
+                        ${data.body1}
+                    </div>
                 </div>
             </div>
         `;
     }
 };
 
-document.addEventListener('DOMContentLoaded', () => UI.init());
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { api, UI };
+} else {
+    document.addEventListener('DOMContentLoaded', () => UI.init());
+}
