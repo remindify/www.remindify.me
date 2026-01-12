@@ -1,0 +1,20 @@
+.tab-btn.active {
+    border-color: #2563eb; /* blue-600 */
+    color: #1e293b; /* gray-900 */
+    border-bottom-width: 4px;
+}
+
+.card {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+}
+
+.alert-banner {
+    background-color: #eff6ff;
+    border-left: 4px solid #2563eb;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 0.25rem;
+}
