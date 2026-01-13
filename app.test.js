@@ -22,12 +22,12 @@ describe('UI.formatData', () => {
         expect(data.body1).toBeUndefined();
     });
 
-    test('should format updated_at into formattedDate', () => {
+    test('should format updated_at into formattedDate (fallback)', () => {
         const data = {
             updated_at: "2026-01-12T10:00:53Z"
         };
         UI.formatData(data);
-        // 10:00 UTC
+        // Fallback formatting: (10:00AM | Mon | 12 Jan, 2026)
         expect(data.formattedDate).toBe("(10:00AM | Mon | 12 Jan, 2026)");
     });
 });
