@@ -22,13 +22,3 @@
 .whitespace-pre-line {
     white-space: pre-line;
 }
-
-#logo-container {
-    height: auto;
-    width: 100px;
-}
-
-#logo {
-    width: auto;
-    height: auto;
-}
