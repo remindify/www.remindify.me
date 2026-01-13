@@ -53,7 +53,7 @@ describe('UI.formatData', () => {
         };
         UI.formatData(data);
         // Expect: (10:00AM | Mon | 12 Jan, 2026) UTC
-        expect(data.formattedDate).toBe("(10:00AM | Mon | 12 Jan, 2026) UTC");
+        expect(data.formattedDate).toBe("(10:00AM | Mon | 12 Jan, 2026 UTC)");
 
         dayjs.tz.guess = originalGuess;
     });
@@ -69,7 +69,7 @@ describe('UI.formatData', () => {
         UI.formatData(data);
         // 2026-01-12 10:00:53 UTC is 2026-01-12 18:00:53 HKT
         // Note: Intl.DateTimeFormat might return 'GMT+8' instead of 'HKT' depending on the environment
-        expect(["(6:00PM | Mon | 12 Jan, 2026) HKT", "(6:00PM | Mon | 12 Jan, 2026) GMT+8"]).toContain(data.formattedDate);
+        expect(["(6:00PM | Mon | 12 Jan, 2026 HKT)", "(6:00PM | Mon | 12 Jan, 2026 GMT+8)"]).toContain(data.formattedDate);
 
         dayjs.tz.guess = originalGuess;
     });
@@ -85,7 +85,7 @@ describe('UI.formatData', () => {
         UI.formatData(data);
         // 2026-01-12 10:00:53 UTC is 2026-01-12 05:00:53 EST
         // Note: Intl.DateTimeFormat might return 'GMT-5' instead of 'EST' depending on the environment
-        expect(["(5:00AM | Mon | 12 Jan, 2026) EST", "(5:00AM | Mon | 12 Jan, 2026) GMT-5"]).toContain(data.formattedDate);
+        expect(["(5:00AM | Mon | 12 Jan, 2026 EST)", "(5:00AM | Mon | 12 Jan, 2026 GMT-5)"]).toContain(data.formattedDate);
 
         dayjs.tz.guess = originalGuess;
     });

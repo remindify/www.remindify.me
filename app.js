@@ -80,16 +80,15 @@ const UI = {
             if (typeof dayjs !== 'undefined') {
                 const userTimezone = dayjs.tz.guess();
                 const date = dayjs(data.updated_at).tz(userTimezone);
-                // Use zzz for timezone abbreviation if available, or just Z for offset
-                // Note: dayjs timezone plugin supports 'z' for short name if loaded, 
-                // but 'HKT' was hardcoded. We'll use a dynamic approach.
+                // Use Intl.DateTimeFormat to get a short timezone name for the user's timezone
+                // and fall back to the numeric offset (Z) if unavailable, instead of hardcoding 'HKT'.
                 const parts = new Intl.DateTimeFormat(
                     'en-US',
                     { timeZone: userTimezone, timeZoneName: 'short' })
-                    .formatToParts(date);
+                    .formatToParts(date.toDate());
                 const tzPart = parts.find(p => p.type === 'timeZoneName');
                 const tzName = tzPart && tzPart.value ? tzPart.value : date.format('Z');
-                data.formattedDate = `(${date.format('h:mmA | ddd | D MMM, YYYY')}) ${tzName}`;
+                data.formattedDate = `(${date.format('h:mmA | ddd | D MMM, YYYY')} ${tzName})`;
             } else {
                 const date = new Date(data.updated_at);
                 const hours = date.getUTCHours();
