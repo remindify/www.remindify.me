@@ -12,11 +12,13 @@
 }
 
 .alert-banner {
-    background-color: #eff6ff;
+    background-color: white;
+    border: 1px solid #2563eb;
     border-left: 4px solid #2563eb;
     padding: 1rem;
     margin-bottom: 2rem;
     border-radius: 0.25rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .whitespace-pre-line {
