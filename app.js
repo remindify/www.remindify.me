@@ -26,12 +26,14 @@ const UI = {
         this.tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.id.replace('tab-', '');
+                localStorage.setItem('activeTab', tabId);
                 this.switchTab(tabId);
             });
         });
 
         // Default tab
-        this.switchTab('weather');
+        const savedTab = localStorage.getItem('activeTab') || 'weather';
+        this.switchTab(savedTab);
     },
 
     switchTab: async function(tabId) {
