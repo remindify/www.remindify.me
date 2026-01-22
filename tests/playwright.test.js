@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import path from 'path';
-import fixtures from './fixtures.js';
+import fixtures from '../fixtures.js';
 
 test.describe('Remindify Visual Snapshots', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,7 +16,7 @@ test.describe('Remindify Visual Snapshots', () => {
     });
 
     // Navigate to the local index.html
-    const url = 'file://' + path.resolve(__dirname, 'index.html');
+    const url = 'file://' + path.resolve(__dirname, '../index.html');
     await page.goto(url, { waitUntil: 'domcontentloaded' });
     // Wait for the initial load
     await page.waitForSelector('#tab-weather');
