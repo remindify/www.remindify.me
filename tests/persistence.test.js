@@ -31,7 +31,7 @@ test.describe('Tab Persistence', () => {
 
     // Refresh page
     await page.reload();
-    await page.waitForSelector('#tab-weather'); // wait for UI to be ready
+    await page.waitForSelector('#tab-edb'); // wait for UI to be ready
 
     // Check if EDB tab is still active
     await expect(page.locator('#tab-edb')).toHaveClass(/active/);
