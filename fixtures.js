@@ -19,6 +19,12 @@ const fixtures = {
         body: "- Tuen Mun, HongKong (屯門): 91\\n- North Point, Hong Kong (北角): 83",
         body1: "- Mong Kok, HongKong (旺角): 117\\n- Causeway Bay, HongKong (銅鑼 灣): 128\\n- Tuen Mun, HongKong (屯門): -\\n- Sham Shui Po, HongKong (深水埗): 103\\n- Kwun Tong, HongKong (觀塘): 87\\n- Southern, HongKong (南區): 95\\n- Tai Po, HongKong (大埔): 108\\n- North Point, Hong Kong (北角): 121\\n- Tap Mun, HongKong (塔門): 90\\n- Tsuen Wan, HongKong (荃灣): 96\\n- HongKong (香港): 115\\n- North, HongKong (北區): 102\\n- Yuen Long, HongKong (元朗): 113\\n- Central/Western, HongKong (中西區): 96\\n- Tseung Kwan O, HongKong (將軍澳): 76\\n- Sha Tin, HongKong (沙田): 94\\n- Central, HongKong (中環): 115\\n- Tung Chung, HongKong (東涌): 93\\n- Kwai Chung, HongKong (葵涌): 96\\n- Eastern, HongKong (東區): 82",
         updated_at: "2026-01-12T10:00:53Z"
+    },
+    rain: {
+        id: "rain",
+        body: "Chance of rain is Medium Low at 44%",
+        body1: "Low chance of showers, probably no rain today.",
+        updated_at: "2026-01-12T10:00:53Z"
     }
 };
 

@@ -129,6 +129,17 @@ describe('api methods', () => {
         expect(global.fetch).toHaveBeenCalledWith("https://api.remindify.me/aqi");
         expect(data).toEqual(fixtures.airQuality);
     });
+
+    // not yet implemented
+    test.skip('getRain should fetch from the correct URL', async () => {
+        global.fetch.mockResolvedValue({
+            json: jest.fn().mockResolvedValue(fixtures.rain)
+        });
+
+        const data = await api.getRain();
+        expect(global.fetch).toHaveBeenCalledWith("https://api.remindify.me/rain");
+        expect(data).toEqual(fixtures.rain);
+    });
 });
 
 if (typeof module !== 'undefined' && module.exports) {

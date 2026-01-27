@@ -14,6 +14,9 @@ test.describe('Remindify Visual Snapshots', () => {
     await page.route('**/aqi', async route => {
       await route.fulfill({ json: fixtures.airQuality });
     });
+    await page.route('**/rain', async route => {
+      await route.fulfill({ json: fixtures.rain });
+    });
 
     // Navigate to the local index.html
     const url = 'file://' + path.resolve(__dirname, '../index.html');
@@ -42,5 +45,12 @@ test.describe('Remindify Visual Snapshots', () => {
     // Wait for the Air Quality content
     await page.waitForSelector('text=Air Quality Alert');
     await expect(page).toHaveScreenshot('air-quality-page.png');
+  });
+
+  test('should match the rain page snapshot', async ({ page }) => {
+    await page.click('#tab-rain');
+    // Wait for the Rain content
+    await page.waitForSelector('text=Will it rain?');
+    await expect(page).toHaveScreenshot('rain-page.png');
   });
 });

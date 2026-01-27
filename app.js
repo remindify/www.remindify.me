@@ -11,6 +11,16 @@ const api = {
     getAirQuality: async () => {
         const res = await fetch(URL + "/aqi")
         return res.json()
+    },
+    getRain: async () => {
+        // const res = await fetch(URL + "/rain")
+        // hardcoded for now since this is a new feature
+        return {
+            id: "rain",
+            body: "Chance of rain is Medium Low at 44%",
+            body1: "Low chance of showers, probably no rain today.",
+            updated_at: "2026-01-12T10:00:53Z"
+        }
     }
 };
 
@@ -68,6 +78,10 @@ const UI = {
                 data = await api.getAirQuality();
                 this.formatData(data);
                 this.renderAirQuality(data);
+            } else if (tabId === 'rain') {
+                data = await api.getRain();
+                this.formatData(data);
+                this.renderRain(data);
             }
         } catch (error) {
             this.contentArea.innerHTML = `<div class="text-red-500">Error loading data.</div>`;
@@ -167,6 +181,23 @@ const UI = {
                         <p class="font-semibold text-gray-800 mb-1">Station Readings:</p>
                         ${data.body1}
                     </div>
+                </div>
+            </div>
+        `;
+    },
+
+    renderRain: function(data) {
+        this.contentArea.innerHTML = `
+            <div class="max-w-4xl mx-auto card text-center">
+                <div class="flex items-center justify-center mb-8">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <h2 class="text-xl font-bold text-gray-800 px-8">Will it rain?</h2>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+                
+                <div class="space-y-4 text-gray-700">
+                    <p class="text-lg font-medium">${data.body}</p>
+                    <p class="text-gray-500">${data.body1}</p>
                 </div>
             </div>
         `;
