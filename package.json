@@ -1,0 +1,17 @@
+{
+  "name": "www.remindify.me",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && mkdir -p dist/resources && npm run build:html && npm run build:css && npm run build:assets",
+    "build:html": "html-minifier-terser --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true -o dist/index.html index.html",
+    "build:css": "cleancss -o dist/style.css style.css",
+    "build:assets": "cp -r resources/* dist/resources/ && cp robots.txt sitemap.xml dist/",
+    "serve": "npx serve dist"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "html-minifier-terser": "^7.2.0"
+  }
+}
