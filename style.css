@@ -174,9 +174,12 @@ section {
     background-color: var(--white);
 }
 
-.newsletter h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
+.newsletter div {
+    text-align: center;
+    width: 558px;
+    height: 279px;
+    margin: -80px auto 0 auto;
+    background-color: var(--white);
 }
 
 .newsletter p {
