@@ -174,38 +174,13 @@ section {
     background-color: var(--white);
 }
 
-.newsletter div {
+.beehiiv-embed {
     text-align: center;
-    width: 558px;
+    max-width: 558px;
+    width: 100%;
     height: 279px;
     margin: -80px auto 0 auto;
     background-color: var(--white);
-}
-
-.newsletter p {
-    color: var(--text-muted);
-    margin-bottom: 30px;
-}
-
-.newsletter button {
-    color: var(--white);
-    border: none;
-}
-
-.newsletter-form {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.newsletter-form input {
-    flex: 1;
-    padding: 12px 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    outline: none;
 }
 
 /* Footer Section */
